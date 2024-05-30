@@ -23,13 +23,20 @@ public class ProjectManager {
         this.customers.add(customer);
     }
 
-    public Customer getCustomer(String name) {
+    public Customer getCustomer(String name, String surname) {
         for (Customer customer : customers) {
-            if (customer.getName().equalsIgnoreCase(name)) {
+            if (customer.getName().equalsIgnoreCase(name) && customer.getSurname().equalsIgnoreCase(surname)) {
                 return customer;
             }
         }
         return null;
+    }
+    public int getCustomerCount() {
+        return customers.size();
+    }
+    public void removeCustomer(String name) {
+        Optional<Customer> customer = customers.stream().filter(c -> c.getName().equalsIgnoreCase(name)).findFirst();
+        customer.ifPresent(c -> customers.remove(c));
     }
 
     public void addEmployee(Employee employee) {
@@ -48,4 +55,5 @@ public class ProjectManager {
     public void addProject(Project project) {
         this.projects.add(project);
     }
+
 }

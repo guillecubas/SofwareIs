@@ -86,5 +86,27 @@ public class Project {
         return developers;
     }
 
+    public Contract getContract() {
+        return contract;
+    }
 
+    public static void displayTaskDetails(List<Task> tasks) {
+        if (tasks != null && !tasks.isEmpty()) {
+            System.out.println("- Tasks:");
+            for (Task task : tasks) {
+                System.out.println("  Task: " + task.getName()
+                        + "\n  Description: " + task.getDescription()
+                        + "\n  Start Date: " + task.getStart()
+                        + "\n  End Date: " + task.getEnd()
+                        + "\n  Type: " + task.getType()
+                        + "\n  Effort: " + task.getEfforts().stream().mapToInt(Effort::getAmount).sum() + " hours");
+            }
+        }
+    }
+    private static void displayEmployeeDetails(Employee employee) {
+        if (employee != null) {
+            System.out.println("- Employee: " + employee.getName()
+                    + "\nEmail: " + employee.getEmail());
+        }
+    }
 }
