@@ -11,6 +11,7 @@ public class Task {
     private Date end;
     private TaskType type;
     private List<Effort> efforts;
+    private List<Employee> employees;
 
     public Task(String name, String description, Date start, Date end, TaskType type) {
         this.name = name;
@@ -19,6 +20,7 @@ public class Task {
         this.end = end;
         this.type = type;
         this.efforts = new ArrayList<>();
+        this.employees = new ArrayList<>();
     }
 
     public void addEffort(int amount) {
@@ -73,5 +75,11 @@ public class Task {
 
     public void setEfforts(List<Effort> efforts) {
         this.efforts = efforts;
+    }
+    public void addEmployee(Employee employee) {
+        this.employees.add(employee);
+    }
+    public List<Employee> getEmployees() {
+        return employees;
     }
 }

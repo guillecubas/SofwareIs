@@ -7,11 +7,15 @@ public class Employee {
     private String name;
     private String email;
     private List<Task> tasks;
+    private List<Project> projects;
+    private ArrayList<Project> d;
 
     public Employee(String name, String email) {
         this.name = name;
         this.email = email;
         this.tasks = new ArrayList<>();
+        this.d = new ArrayList<>();
+        this.projects = new ArrayList<>();
     }
 
     public void addTask(Task task) {

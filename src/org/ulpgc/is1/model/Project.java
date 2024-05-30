@@ -1,6 +1,7 @@
 package org.ulpgc.is1.model;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Project {
@@ -10,19 +11,31 @@ public class Project {
     private String description;
     private ProjectType type;
     private List<Task> tasks;
+    private ArrayList<Employee> developers;
+    private Employee manager;
+    private Customer customer;
+    private Contract contract;
 
     // Constructor
-    public Project(String name, String description, ProjectType type) {
+    public Project(String name, String description, ProjectType type, Date start, Date end, int budget) {
         this.id = nextId++;
         this.name = name;
         this.description = description;
         this.type = type;
         this.tasks = new ArrayList<>();
+        this.developers = new ArrayList<>();
+        this.manager = null;
+        this.customer = null;
+        this.contract = new Contract(start, end, budget);
     }
 
-    // Add a task to the project
+
+
     public void addTask(Task task) {
         this.tasks.add(task);
+    }
+    public void addDeveloper(Employee developer) {
+        this.developers.add(developer);
     }
 
     // Getters and Setters
@@ -57,4 +70,21 @@ public class Project {
     public List<Task> getTasks() {
         return tasks;
     }
+    public void setManager(Employee manager) {
+        this.manager = manager;
+    }
+    public Employee getManager() {
+        return manager;
+    }
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+    public Customer getCustomer() {
+        return customer;
+    }
+    public List<Employee> getDevelopers() {
+        return developers;
+    }
+
+
 }
