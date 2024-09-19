@@ -17,24 +17,25 @@ public class Project {
     private Contract contract;
 
     // Constructor
-    public Project(String name, String description, ProjectType type, Date start, Date end, int budget) {
+    public Project(String name, String description, ProjectType type, Date start, Date end, int budget, Customer customer, Employee manager) {
         this.id = nextId++;
         this.name = name;
         this.description = description;
         this.type = type;
         this.tasks = new ArrayList<>();
         this.developers = new ArrayList<>();
-        this.manager = null;
-        this.customer = null;
         this.contract = new Contract(start, end, budget);
+        this.customer = customer;
+        this.manager = manager;
     }
 
-
-
-    public void addTask(Task task) {
+    public void addTask(String name, String description, Date start, Date end, TaskType type) {
+        Task task = new Task(name, description, start, end, type);
         this.tasks.add(task);
     }
-    public void addDeveloper(Employee developer) {
+
+
+    public void addDeveloper(Employee developer) { 
         this.developers.add(developer);
     }
 
@@ -85,12 +86,20 @@ public class Project {
     public List<Employee> getDevelopers() {
         return developers;
     }
+    public  Employee getDeveloper(String name){
+        for (Employee developer : developers) {
+            if (developer.getName().equalsIgnoreCase(name)) {
+                return developer;
+            }
+        }
+        return null;
+    }
 
     public Contract getContract() {
         return contract;
     }
 
-    public static void displayTaskDetails(List<Task> tasks) {
+    public void displayTaskDetails(List<Task> tasks) {
         if (tasks != null && !tasks.isEmpty()) {
             System.out.println("- Tasks:");
             for (Task task : tasks) {
@@ -103,10 +112,18 @@ public class Project {
             }
         }
     }
-    private static void displayEmployeeDetails(Employee employee) {
+    private void displayEmployeeDetails(Employee employee) {
         if (employee != null) {
             System.out.println("- Employee: " + employee.getName()
                     + "\nEmail: " + employee.getEmail());
         }
+    }
+    private Task getTask(String name) {
+        for (Task task : tasks) {
+            if (task.getName().equalsIgnoreCase(name)) {
+                return task;
+            }
+        }
+        return null;
     }
 }

@@ -9,73 +9,72 @@ public class Main {
     public static void main(String[] args) {
         ProjectManager pm = new ProjectManager();
         init(pm);
+
+        // Add effort to the first task of the first project
+
+        Customer firstCustomer = pm.getCustomer(0);
+
+        Project project = firstCustomer.getProjects().get(0);
+        Task task = project.getTasks().get(0);
+        task.addEffort(10, pm.getEmployee(1));
+
+        // Add effort to the second task of the first project
+        Task task2 = project.getTasks().get(1);
+        task2.addEffort(20, pm.getEmployee(1));
+
+        //  Print the data of the first employee
+        System.out.println("-First customer \n" +
+                "Name: " + pm.getCustomer(0).getName()
+                + "\nSurname: " + pm.getCustomer(0).getSurname()
+                + "\nPhone: " + pm.getCustomer(0).getPhone());
+
+        //  Print the data of the manager
+        System.out.println("-Manager \n" +
+                "Name: " + pm.getEmployee(0).getName()
+                + "\nEmail: " + pm.getEmployee(0).getEmail());
+        //  Print the data of the first project
+
+        Customer customer = pm.getCustomer(0);
+        Project project1 = customer.getProjects().get(0);
+        project1.getName();
+        printProjectDetails(project1);
+
+        // Print the tasks of the first project
+        printProjectTasks(project1);
+        // Remove the second customer
+        pm.removeCustomer("Jane", "Doe");
+
+        // Print the number of customers
+        System.out.println("Number of customers: " + pm.countCustomer());
     }
 
     public static void init(ProjectManager pm) {
         // i. Create two customers
-        Customer firstCustomer = new Customer("John","Doe", new Phone("000"));
-        Customer secondCustomer = new Customer("Jane","Doe", new Phone("1234567890"));
-
-        pm.addCustomer(firstCustomer);
-        pm.addCustomer(secondCustomer);
-
+        pm.addCustomer("John","Doe", new Phone("+34666555444"));
+        pm.addCustomer("Jane","Doe", new Phone("1321312312"));
         // ii. Create two employees
-        Employee developer = new Employee("Alice Johnson", "alice@example.com");
-        Employee manager = new Employee("Bob Smith", "bob@example.com");
 
-        pm.addEmployee(manager);
-        pm.addEmployee(developer);
-
+        pm.addEmployee("Alice Johnson", "alice@example.com");
+        pm.addEmployee("Bob Smith", "bob@example.com");
         // iii. Create a project linked to the first customer
 
         Date projectStartDate = new Date();
         Date projectEndDate = new Date(projectStartDate.getTime() + (100 * 24 * 60 * 60 * 1000L)); // 100 days later
-        Project project = new Project("New Web Development", "Development of a new web platform", ProjectType.WEB_DEVELOPMENT, projectStartDate, projectEndDate, 50000);
+        pm.addProject("New Web Development", "Development of a new web platform", ProjectType.WEB_DEVELOPMENT, projectStartDate, projectEndDate, 50000, pm.getCustomer(0), pm.getEmployee(0));
 
-        // Linking customer to the project
-        project.setCustomer(firstCustomer);
+        // iv. Create two tasks and add them to the project and the developer
+        Customer firstCustomer = pm.getCustomer(0);
+        Project project = firstCustomer.getProjects().get(0);
+        project.addDeveloper(pm.getEmployee(1));
 
-        // Adding manager and developers
-        project.setManager(manager);
-        project.addDeveloper(developer);
-
-        // iv. Create two tasks and add them to the project
-        Task designTask = new Task("Website Design", "Design the aesthetic aspects", new Date(), new Date(), TaskType.DESIGN);
-        Task codingTask = new Task("Backend Development", "Develop the server-side logic", new Date(), new Date(), TaskType.PROGRAMMING);
-        designTask.addEffort(10);
-        codingTask.addEffort(20);
-
-        project.addTask(designTask);
-        project.addTask(codingTask);
-
-        // Adding project to the project manager's list and customer's list
-        pm.addProject(project);
-        pm.getCustomer("John", "Doe").addProject(project);
+        project.addTask("Backend Development", "Develop the server-side logic", new Date(), new Date(), TaskType.PROGRAMMING);
+        project.addTask("Frontend Development", "Create the user interface and client-side logic", new Date(), new Date(System.currentTimeMillis() + (10 * 24 * 60 * 60 * 1000L)), TaskType.PROGRAMMING);
 
 
-        // v. Print the data of the first employee
-        System.out.println("-First customer \n" +
-                "Name: " + pm.getCustomer("John", "Doe").getName()
-                + "\nSurname: " + pm.getCustomer("John", "Doe").getSurname()
-                + "\nPhone: " + pm.getCustomer("John", "Doe").getPhone());
 
-        // vi. Print the data of the manager
-        System.out.println("-Manager \n" +
-                "Name: " + pm.getEmployee("Bob Smith").getName()
-                + "\nEmail: " + pm.getEmployee("Bob Smith").getEmail());
-        // vii. Print the data of the first project
 
-        Customer customer = pm.getCustomer("John", "Doe");
-        Project project1 = customer.getProjects().get(0);
-        printProjectDetails(project1);
 
-        // viii. Print the tasks of the first project
-        printProjectTasks(project1);
-        // ix. Remove the second customer
-        pm.removeCustomer("Jane Doe");
 
-        // x. Print the number of customers
-        System.out.println("Number of customers: " + pm.getCustomerCount());
     }
     private static void printProjectDetails(Project project) {
         System.out.println("-Project Name: " + project.getName()
@@ -85,13 +84,25 @@ public class Main {
                 + "\nEnd Date: " + project.getContract().getEndDate().toString()
                 + "\nBudget: " + project.getContract().getBudget()
                 + "\nManager: " + project.getManager().getName()
-                + "\nCustomer: " + project.getCustomer().getName()
-                + "\nDevelopers: " + project.getDevelopers().get(0).getName());
+                + "\nCustomer: " + project.getCustomer().getName());
+
+        // Check if there are any developers
+        if (!project.getDevelopers().isEmpty()) {
+            System.out.println("Developers: " + project.getDevelopers().get(0).getName());
+        } else {
+            System.out.println("Developers: No developers assigned.");
+        }
+
+        // Print the tasks in the project
         for (Task task : project.getTasks()) {
             System.out.println("Task: " + task.getName());
         }
     }
     private static void printProjectTasks(Project project) {
+        if (project.getTasks().isEmpty()) {
+            System.out.println("No tasks available in the project.");
+            return;
+        }
         List<Task> tasks = project.getTasks();
         System.out.println("-Tasks of project " + project.getName() + ":");
         for (int i = 0; i < tasks.size(); i++) {

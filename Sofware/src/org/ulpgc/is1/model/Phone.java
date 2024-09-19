@@ -14,7 +14,9 @@ public class Phone {
     }
 
     public static boolean isValid(String number) {
-        return number.matches("\\d{10}");
+
+        return number.matches("^(?:(?:\\+?[0-9]{2,4})?[ ]?[6789][0-9 ]{8,13})$");
+
     }
 
     public String getNumber() {

@@ -4,23 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Employee {
+
     private String name;
     private String email;
-    private List<Task> tasks;
     private List<Project> projects;
-    private ArrayList<Project> d;
 
     public Employee(String name, String email) {
         this.name = name;
         this.email = email;
-        this.tasks = new ArrayList<>();
-        this.d = new ArrayList<>();
         this.projects = new ArrayList<>();
     }
 
-    public void addTask(Task task) {
-        tasks.add(task);
-    }
+
 
     public String getName() {
         return name;
@@ -38,11 +33,15 @@ public class Employee {
         this.email = email;
     }
 
-    public List<Task> getTasks() {
-        return tasks;
+    public void addProject(Project project) {
+        this.projects.add(project);
     }
-
-    public void setTasks(List<Task> tasks) {
-        this.tasks = tasks;
+    public Project getProject(String name){
+        for (Project project : projects) {
+            if (project.getName().equalsIgnoreCase(name)) {
+                return project;
+            }
+        }
+        return null;
     }
 }

@@ -11,7 +11,6 @@ public class Task {
     private Date end;
     private TaskType type;
     private List<Effort> efforts;
-    private List<Employee> employees;
 
     public Task(String name, String description, Date start, Date end, TaskType type) {
         this.name = name;
@@ -20,14 +19,13 @@ public class Task {
         this.end = end;
         this.type = type;
         this.efforts = new ArrayList<>();
-        this.employees = new ArrayList<>();
     }
 
-    public void addEffort(int amount) {
-        Effort newEffort = new Effort(amount);
-        this.efforts.add(newEffort);
-    }
+    public void addEffort(int amount, Employee employee) {
+        Effort effort = new Effort(amount,this, employee);
+        this.efforts.add(effort);
 
+    }
 
     public List<Effort> getEfforts() {
         return efforts;
@@ -76,10 +74,23 @@ public class Task {
     public void setEfforts(List<Effort> efforts) {
         this.efforts = efforts;
     }
-    public void addEmployee(Employee employee) {
-        this.employees.add(employee);
+
+    public Effort getEffort(int amount, Employee employee) {
+        for (Effort effort : efforts) {
+            if (effort.getAmount() == amount 
+                && effort.getEmployee().equals(employee)
+                && effort.getTask().equals(this)) {
+                return effort;
+            }
+        }
+        return null;
     }
-    public List<Employee> getEmployees() {
-        return employees;
+
+    public void deleteEffort(Effort effort) {
+        this.efforts.remove(effort);
+    }
+    public void addEffort(Effort effort) {
+        this.efforts.add(effort);
+        
     }
 }
